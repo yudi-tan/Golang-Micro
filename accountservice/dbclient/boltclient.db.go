@@ -53,7 +53,7 @@ func (bc *BoltClient) Seed() {
 
 
 func (bc *BoltClient) initializeBucket() {
-	bc.boltDB.Update(func(tx *bolt.Tx) error {
+	_ = bc.boltDB.Update(func(tx *bolt.Tx) error {
 		_, err := tx.CreateBucket([]byte("AccountBucket"))
 		if err != nil {
 			return fmt.Errorf("Create bucket failed: %s", err)
@@ -71,7 +71,7 @@ func (bc *BoltClient) seedAccounts() {
 			Name: "Person_" + strconv.Itoa(i),
 		}
 		jsonBytes, _ := json.Marshal(acc)
-		bc.boltDB.Update(func(tx *bolt.Tx) error {
+		_ = bc.boltDB.Update(func(tx *bolt.Tx) error {
 			b := tx.Bucket([]byte("AccountBucket"))
 			err := b.Put([]byte(key), jsonBytes)
 			return err
